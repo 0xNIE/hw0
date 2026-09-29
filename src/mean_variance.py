@@ -121,9 +121,16 @@ def max_sharpe_weights(mu, Sigma, rf, allow_short=True):
         method="SLSQP",
         options={"ftol": 1e-12, "maxiter": 500},
     )
-    if not result.success:
+    y = result.x
+    # As in `minimize_variance`, the solver can report failure after it has
+    # reached the answer, and whether it does depends on the machine. What
+    # matters is feasibility.
+    feasible = np.isclose(y @ excess, 1, atol=1e-8) and (
+        allow_short or y.min() >= -1e-8
+    )
+    if not (result.success or feasible):
         raise RuntimeError(f"Optimizer failed: {result.message}")
-    return result.x / result.x.sum()
+    return y / y.sum()
 
 
 def risk_free_frontier(mu, Sigma, rf, tol=1e-10):
