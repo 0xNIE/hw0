@@ -36,9 +36,7 @@ dashboard shows simulated returns.
    appendix notebook, `src/02_markowitz_derivation.ipynb.py`, derives the
    formulas.
 2. Fill in the two functions marked `TODO` in `src/port_opt.py`.
-3. Complete the three GitHub Skills tutorials listed on the HW 0 page and
-   record them in `src/github_skills.py`.
-4. Run `pytest`. When the tests pass, commit and push. The same tests run
+3. Run `pytest`. When the tests pass, commit and push. The same tests run
    automatically on GitHub Actions; look for the green check mark next to your
    commit.
 
