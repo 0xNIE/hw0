@@ -64,3 +64,22 @@ def task_run_notebooks():
             "targets": [OUTPUT_DIR / notebook.name, OUTPUT_DIR / f"{stem}.html"],
             "clean": True,
         }
+
+
+def task_generate_pipeline_site():
+    """Build the chartbook documentation site into docs/.
+
+    The site collects the executed notebooks and documents the data they use.
+    Browse it locally with `chartbook browse`. docs/ is gitignored.
+    """
+    notebooks = ["01_markowitz", "02_markowitz_derivation"]
+    return {
+        "actions": ["chartbook build -f"],
+        "targets": ["docs/index.html"],
+        "file_dep": [
+            "chartbook.toml",
+            *[OUTPUT_DIR / f"{nb}.ipynb" for nb in notebooks],
+        ],
+        "task_dep": ["run_notebooks"],
+        "verbosity": 2,
+    }
