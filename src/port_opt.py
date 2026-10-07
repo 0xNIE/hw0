@@ -27,9 +27,10 @@ def find_global_minimum_variance_portfolio(Sigma):
 
     Solves: minimize w' Sigma w subject to sum(w) = 1.
     """
-    n = Sigma.shape[0]
-    ## TODO: YOUR CODE HERE. Replace the equal-weighted placeholder below.
-    wstar = np.ones(n) / n
+    ones = np.ones(Sigma.shape[0])
+    # Solve Sigma x = 1 rather than inverting Sigma (more stable).
+    x = np.linalg.solve(Sigma, ones)
+    wstar = x / x.sum()
     return wstar
 
 
@@ -38,7 +39,8 @@ def find_tangency_portfolio(mu, Sigma, rf):
 
     Solves: maximize (w' mu - rf) / sqrt(w' Sigma w) subject to sum(w) = 1.
     """
-    n = Sigma.shape[0]
-    ## TODO: YOUR CODE HERE. Replace the equal-weighted placeholder below.
-    wstar = np.ones(n) / n
+    excess = mu - rf
+    # Solve Sigma x = (mu - rf), then normalize so the weights sum to one.
+    x = np.linalg.solve(Sigma, excess)
+    wstar = x / x.sum()
     return wstar
